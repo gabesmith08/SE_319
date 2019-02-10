@@ -1,0 +1,161 @@
+package ticTacToe;
+
+import javax.swing.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class Game implements ActionListener {
+
+public static int turnNum;
+public static JLabel title;
+public static JButton[][] buttons = new JButton[3][3];
+public static JButton reset;
+public static boolean xTurn = true;
+public static boolean won = false;
+public static int[][] grid = new int[3][3];
+
+public static void main(String[] args) {
+    // Frame
+    JFrame frame = new JFrame("TicTacToe");
+    frame.setSize(255, 234);
+    frame.setLocationRelativeTo(null);
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setResizable(false);
+
+    // Container
+    JPanel container = new JPanel();
+    container.setLayout(null);
+    frame.setContentPane(container);
+
+    // Contents
+    // Title
+    title = new JLabel("TicTacToe");
+    title.setBounds(55, 10, 70, 15);
+
+    // Buttons    
+    // Loop to create add all buttons to array and to add action listeners to all
+    for (int a = 0; a < buttons.length; a++) {
+        for (int b = 0; b < buttons.length; b++) {
+            buttons[a][b] = new JButton("_");
+            buttons[a][b].addActionListener(new Game());
+        }
+    }
+    // Row 1
+    buttons[0][0].setBounds(5, 40, 50, 50);
+    buttons[0][1].setBounds(60, 40, 50, 50);
+    buttons[0][2].setBounds(115, 40, 50, 50);
+    // Row 2
+    buttons[1][0].setBounds(5, 95, 50, 50);
+    buttons[1][1].setBounds(60, 95, 50, 50);
+    buttons[1][2].setBounds(115, 95, 50, 50);
+    // Row 3
+    buttons[2][0].setBounds(5, 150, 50, 50);
+    buttons[2][1].setBounds(60, 150, 50, 50);
+    buttons[2][2].setBounds(115, 150, 50, 50);
+
+    reset = new JButton("Reset");
+    reset.setBounds(170, 55, 75, 20);
+    reset.addActionListener(new Game());
+
+    // Adding contents
+    container.add(title);
+    for (int a = 0; a < buttons.length; a++) {
+        for (int b = 0; b < buttons.length; b++) {
+            container.add(buttons[a][b]);
+        }
+    }
+    container.add(reset);
+
+    // Extras
+    frame.toFront();
+    frame.setVisible(true);
+}
+
+public void actionPerformed(ActionEvent event) {
+    // Increase turn # by one
+    turnNum++;
+    // Nested loops to perform actions on any button
+    for (int x = 0; x < buttons.length; x++) {
+        for (int y = 0; y < buttons.length; y++) {
+            if (event.getSource() == buttons[x][y]) {
+                if (xTurn == true) {
+                    buttons[x][y].setText("X");
+                    xTurn = false;
+                    buttons[x][y].setEnabled(false);
+                    grid[x][y] = 1;
+                } else if (xTurn == false) {
+                    buttons[x][y].setText("O");
+                    xTurn = true;
+                    buttons[x][y].setEnabled(false);
+                    grid[x][y] = 2;
+                }
+            }
+        }
+    }
+    // Button event for resetting the board
+    if ((event.getSource() == reset)) {
+        // Set turn # back to 0
+        turnNum = 0;
+        // Set title back to default
+        title.setText("TicTacToe");
+        // Reset array
+        grid = new int[3][3];
+        // Set first turn to X as usual
+        xTurn = true;
+        // Simple loop to change buttons text to default and enable all buttons
+        for (int a = 0; a < buttons.length; a++) {
+            for (int b = 0; b < buttons.length; b++) {
+                buttons[a][b].setEnabled(true);
+                buttons[a][b].setText("_");
+            }
+        }
+        // Make won false
+        won = false;
+    } else // Check if a player has won, if not, display cat's game
+    if (turnNum == 9) {
+        title.setText("Cat's game!");
+    } else {
+        hasWon(grid);
+    }
+}
+
+// Method to check if a player has won
+public static boolean hasWon(int[][] grid) {
+    for (int a = 1; a <= 2; a++) {
+        for (int b = 0; b < grid.length; b++) {
+            // Checking for win in horizontal, then vertical, then diagonal
+            if (grid[b][0] == a && grid[b][1] == a && grid[b][2] == a) {
+                won = true;
+            } else if (grid[0][b] == a && grid[1][b] == a && grid[2][b] == a) {
+                won = true;
+            } else if ((grid[0][0] == a && grid[1][1] == a && grid[2][2] == a
+                    || (grid[0][2] == a && grid[1][1] == a && grid[2][0] == a))) {
+                won = true;
+            }
+        }
+        // If the player won, display text, disable buttons, and return true
+        if (won) {
+            if (a == 1) {
+                // Simple loop to disable all buttons
+                for (int j = 0; j < buttons.length; j++) {
+                    for (int k = 0; k < buttons.length; k++) {
+                        buttons[j][k].setEnabled(false);
+                    }
+                }
+                title.setText("X has won!");
+                return true;
+            } else {
+                for (int j = 0; j < buttons.length; j++) {
+                    for (int k = 0; k < buttons.length; k++) {
+                        buttons[j][k].setEnabled(false);
+                    }
+                }
+                title.setText("O has won!");
+                return true;
+            }
+        }
+    }
+    // Return false if nobody has won
+    return false;
+}
+}

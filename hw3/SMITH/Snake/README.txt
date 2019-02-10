@@ -1,0 +1,1 @@
+README.txt----- To run snake just open the html in a browser, it starts automatically. But once the program is stopped by hitting the STOP button, you must reload the page in order to play again. Thanks

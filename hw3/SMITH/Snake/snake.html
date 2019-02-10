@@ -1,0 +1,69 @@
+<html>
+  <head>
+  </head>
+  <body>
+
+    <p id="here"></p></h1>
+    <input type="button" onclick="clearInterval(timer)" value="STOP">
+    <input id="left" type="button" value="turn left" />
+    <input id="right" type="button" value="turn right" />
+    <canvas id="canvasId" width="400" height="250" style="border:1px solid #000000;"></canvas>
+
+
+    <script type="text/javascript">
+    var leftBtn = document.getElementById("left");
+    var rightBtn = document.getElementById("right");
+    var context = document.getElementById("canvasId").getContext("2d");
+    var x = 0;
+    // y at 70 starts it somewhat in the middle of the canvas
+    var y = 70;
+    var i = 0;
+    // state variable for if statements to determine what way the snake will go
+    var state = 1;
+    context.moveTo(x, y);
+
+    var timer = setInterval(function() {
+      //using i as an iterator, almost like a while loop
+      document.getElementById("here").innerHTML = i++;
+
+      //clicking left and right buttons simpily changes the state variable
+      leftBtn.onclick = function () {
+        state++;
+      }
+      rightBtn.onclick = function () {
+        state--;
+      }
+
+      //snake moves right (starting default)
+      if(state == 1 || state == 5) {
+        // rolls state value back to 1 so snake can only go up left right down
+        state = 1
+        x++;
+        context.lineTo(x, y);
+        context.stroke()
+      }
+      // snake moves down
+      else if(state == 2) {
+        y--;
+        context.lineTo(x, y);
+        context.stroke()
+      }
+      //snake moves left
+      else if(state == 3) {
+        x--;
+        context.lineTo(x, y);
+        context.stroke()
+      }
+      //snake moves up
+      else if(state == 4 || state == 0) {
+        // rolls state value back to 4 so snake can only go up left right down
+        state = 4;
+        y++;
+        context.lineTo(x, y);
+        context.stroke()
+      }
+    }, 1000)
+
+    </script>
+  </body>
+</html>

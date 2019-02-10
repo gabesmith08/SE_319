@@ -1,0 +1,1 @@
+README.txt----- calculator runs like a normal calculator would once you open up the calculator html page. Could not find out how to get buttons to highlight correctly but if you look in my calculator.js code you will see my commented out attempts to color change of operator buttons. I tried many different ways but could not get it to work correctly, Sorry!
