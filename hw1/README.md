@@ -1,1 +1,1 @@
-See HW 319 pdf for a description of implemented project
+See 319 HW1 pdf for a description of implemented project
